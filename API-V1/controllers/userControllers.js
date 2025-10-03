@@ -36,7 +36,7 @@ const createUser = async (req, res) => {
       
     res.status(201).json({"message": "User created successfully", user: newUser});
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -46,7 +46,7 @@ const loginUser = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await User.login(username, password);
-        res.status(200).json({ message: "Login successful", user });
+        res.status(200).json({ message: "Login successful", user: user });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
