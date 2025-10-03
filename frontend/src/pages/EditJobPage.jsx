@@ -26,6 +26,9 @@ const EditJobPage = () => {
   });
   const [newJob, setNewJob] = useState(job);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
+
   const navigate = useNavigate();
 
   const updateJob = async (updatedJob) => {
@@ -34,6 +37,7 @@ const EditJobPage = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updatedJob),
         });

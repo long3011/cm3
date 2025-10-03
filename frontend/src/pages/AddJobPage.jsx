@@ -22,6 +22,9 @@ const AddJobPage = () => {
     requirements: [],
   });
   const [newJob, setNewJob] = useState(job);
+  
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
 
   const navigate = useNavigate();
  
@@ -31,6 +34,7 @@ const AddJobPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newJob),
       });
@@ -44,7 +48,7 @@ const AddJobPage = () => {
     return true;
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
 
     setNewJob(job);
@@ -70,8 +74,13 @@ const AddJobPage = () => {
     requirements: [],
   });
 
-    addJob(newJob);
-    return navigate("/");
+    const success = await addJob(newJob);
+    if (success) {
+      console.log("Job Added Successfully");
+      navigate("/");
+    } else {
+      console.error("Failed to add the job");
+    }
   };
 
   return (
