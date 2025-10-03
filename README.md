@@ -1,5 +1,9 @@
 # Usage
- 
+ | Member Name | TasksCompleted | Contribution (%) |
+|--------------|----------------------------------------
+| Long        | Frontend | 50%              |
+| Miku       | API V2      | 25%              |
+| Tuukka       | API V1 | 25%              |
 1. **Install Backend Dependencies**  
    
    - Rename the `.env.example` file to `.env` in the backend directory.
