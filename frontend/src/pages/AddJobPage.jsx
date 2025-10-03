@@ -21,7 +21,6 @@ const AddJobPage = () => {
     applicationDeadline: null, //Date
     requirements: [],
   });
-  const [newJob, setNewJob] = useState(job);
 
   const navigate = useNavigate();
  
@@ -47,30 +46,7 @@ const AddJobPage = () => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    setNewJob(job);
-    console.log(newJob);
-
-    setJob({
-    title: "",
-    type: "Full-Time",
-    description: "",
-    company: {
-      name: "",
-      contactEmail: "",
-      contactPhone: "",
-      website: "",
-      size: 0,
-    },
-    location: "",
-    salary: 0,
-    experienceLevel: "Entry", //Entry, Mid, Senior
-    postedDate: Date.now(),
-    status: "Open", //Open, Closed
-    applicationDeadline: Date.now(), //Date
-    requirements: [],
-  });
-
-    addJob(newJob);
+    addJob(job);
     return navigate("/");
   };
 

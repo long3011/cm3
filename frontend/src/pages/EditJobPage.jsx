@@ -24,7 +24,6 @@ const EditJobPage = () => {
     applicationDeadline: null, //Date
     requirements: [],
   });
-  const [newJob, setNewJob] = useState(job);
 
   const navigate = useNavigate();
 
@@ -68,29 +67,7 @@ const EditJobPage = () => {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    setNewJob(job);
-
-    setJob({
-    title: "",
-    type: "Full-Time",
-    description: "",
-    company: {
-      name: "",
-      contactEmail: "",
-      contactPhone: "",
-      website: "",
-      size: 0,
-    },
-    location: "",
-    salary: 0,
-    experienceLevel: "Entry", //Entry, Mid, Senior
-    postedDate: new Date.now(),
-    status: "Open", //Open, Closed
-    applicationDeadline: null, //Date
-    requirements: [],
-  }) // Reset form
-
-    const success = await updateJob(newJob);
+    const success = await updateJob(job);
     if (success) {
       // toast.success("Job Updated Successfully");
       navigate(`/jobs/${id}`);
