@@ -10,6 +10,7 @@ const cors = require("cors");
 // Middlewaresa
 app.use(cors())
 app.use(express.json());
+app.use(express.static('view')); // Serve static files from 'view'
 
 connectDB();
 
@@ -18,6 +19,10 @@ app.use("/api/jobs", jobRouter);
 app.use("/api/users", userRouter)
 app.use(unknownEndpoint);
 app.use(errorHandler);
+
+app.use((req, res) => {
+  res.sendFile(__dirname + '/view/index.html');
+});
 
 module.exports = app;
 

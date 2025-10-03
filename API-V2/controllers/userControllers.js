@@ -41,6 +41,8 @@ const signup = async ( req, res ) => {
         if(userExists) {
             res.status(400).json({message: "User alredy exists"})
         }
+        
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)       
     
@@ -58,7 +60,7 @@ const signup = async ( req, res ) => {
         });
         if (user){
             const token = generateToken(user._id);
-            res.status(200).json({ username, token })
+            res.status(201).json({ username, token })
         } else{
             res.status(400).json({message: "Invalid user data"}) 
         } 
@@ -75,7 +77,7 @@ const login = async ( req, res ) => {
             const token = generateToken(user._id);
             res.status(200).json({username,token})
         } else{
-            res.status(400).json({message:"Invalid credentials"})
+            res.status(400).json({error:"Invalid credentials"})
         }
     } catch (error){
     res.status(400).json({error: error.message})
