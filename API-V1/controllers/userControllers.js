@@ -8,8 +8,12 @@ const getAllUsers = async (req, res) => {
         const users = await User.find({});
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+        if (error.name === "ValidationError") {
+          return res.status(400).json({ error: error.message });
+        }
+        res.status(500).json({ error: "Internal server error" });
+      }
+      
 };
 
 // POST /users
@@ -17,7 +21,19 @@ const createUser = async (req, res) => {
   //res.send("createUser");
   try {
     const { name, username, password, phone_number, gender, date_of_birth, membership_status, bio, address, profile_picture } = req.body;
-    const newUser = await User.create({ name, username, password, phone_number, gender, date_of_birth, membership_status, bio, address, profile_picture });
+    const newUser = await User.create({
+        name,
+        username,
+        password,
+        phone_number,
+        gender,
+        date_of_birth,
+        membership_status,
+        bio,
+        address,
+        profile_picture
+      });
+      
     res.status(201).json({"message": "User created successfully", user: newUser});
   } catch (error) {
     res.status(500).json({ error: error.message });

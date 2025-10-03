@@ -9,7 +9,7 @@ beforeAll(async () => {
 });
 
 describe("User Routes", () => {
-  describe("POST /api/users", () => {
+  describe("POST /api/users/signup", () => {
     it("should signup a new user with valid credentials", async () => {
       // Arrange
       const userData = {
@@ -26,7 +26,7 @@ describe("User Routes", () => {
       };
 
       // Act
-      const result = await api.post("/api/users").send(userData);
+      const result = await api.post("/api/users/signup").send(userData);
 
       // Assert
       expect(result.status).toBe(201);
@@ -41,7 +41,7 @@ describe("User Routes", () => {
       };
 
       // Act
-      const result = await api.post("/api/users").send(userData);
+      const result = await api.post("/api/users/signup").send(userData);
 
       // Assert
       expect(result.status).toBe(400);
