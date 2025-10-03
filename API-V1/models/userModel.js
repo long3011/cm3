@@ -15,4 +15,11 @@ const userSchema = new mongoose.Schema({
 
   });
 
+  userSchema.statics.login = async function (username, password) {
+    const user = await this.findOne({ username });
+    if (!user) throw new Error("Invalid username");
+    if (user.password !== password) throw new Error("Invalid password");
+    return user;
+  };
+
   module.exports = mongoose.model('User', userSchema);
