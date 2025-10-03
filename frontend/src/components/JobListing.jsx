@@ -1,11 +1,14 @@
+import Link from "react-router-dom";
+
 const JobListing = () => {
   return (
-    <div className="job-preview">
-      <h2>Job Title</h2>
-      <p>Type: some title</p>
-      <p>Description: some description</p>
-      <p>Company: company xyz</p>
-    </div>
+    <div className="job-preview" key={job.id}>
+          <Link to={`/jobs/${job.id}`}>
+            <h2>{job.title}</h2>
+          </Link>
+          <p>Type: {job.type}</p>
+          <p>Company: {job.company.name}</p>
+        </div>
   );
 };
 
