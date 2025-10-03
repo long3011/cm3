@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
-const AddJobPage = () => {
-  const [job, setJob] = useState({
+const EditJobPage = () => {
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
+    const [job, setJob] = useState({
     title: "",
     type: "Full-Time",
     description: "",
@@ -18,51 +21,76 @@ const AddJobPage = () => {
     experienceLevel: "Entry", //Entry, Mid, Senior
     postedDate: Date.now().toString(),
     status: "open", //Open, Closed
-    applicationDeadline: "", //Date
+    applicationDeadline: null, //Date
     requirements: [],
   });
-  
+
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user ? user.token : null;
 
   const navigate = useNavigate();
- 
-  const addJob = async (newJob) => {
+
+  const updateJob = async (updatedJob) => {
     try {
-      const res = await fetch("/api/jobs", {
-        method: "POST",
+      const res = await fetch(`/api/jobs/${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newJob),
-      });
+        body: JSON.stringify(updatedJob),
+        });
       if (!res.ok) {
-        throw new Error("Failed to add job");
+        throw new Error("Failed to update job");
       }
     } catch (error) {
       console.error(error);
+      setError(error.message);
       return false;
     }
     return true;
   };
 
+  useEffect(() => {
+    const fetchJob = async () => {
+        try {
+      const res = await fetch(`/api/jobs/${id}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch job");
+      }
+            const data = await res.json();
+            setJob(data);
+        } catch (error) {
+            console.error(error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+    fetchJob();
+  }, [id]);
+
   const submitForm = async (e) => {
     e.preventDefault();
 
-    const success = await addJob(job);
+    const success = await updateJob(job);
     if (success) {
-      console.log("Job Added Successfully");
-      navigate("/");
+      // toast.success("Job Updated Successfully");
+      navigate(`/jobs/${id}`);
     } else {
-      console.error("Failed to add the job");
+      // toast.error("Failed to update the job");
     }
   };
 
-  return (
+    return (
     <div className="create">
-      <h2>Add a New Job</h2>
-      <form onSubmit={submitForm}>
+      <h2>Update Job</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <form onSubmit={submitForm}>
         <label>Job title:</label>
         <input
           type="text"
@@ -162,10 +190,11 @@ const AddJobPage = () => {
           value={job.requirements}
           onChange={(e) => setJob({ ...job, requirements: e.target.value.split(",") })}
         />
-        <button>Add Job</button>
-      </form>
+          <button>Update Job</button>
+        </form>
+      )}
     </div>
   );
 };
 
-export default AddJobPage;
+export default EditJobPage;
