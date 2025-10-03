@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
 
-const JobListing = () => {
+const JobListing = ({ job }) => {
   return (
-    <div className="job-preview" key={job.id}>
-          <Link to={`/jobs/${job.id}`}>
+    <div className="job-preview" key={job._id}>
+          <Link to={`/jobs/${job._id}`}>
             <h2>{job.title}</h2>
           </Link>
           <p>Type: {job.type}</p>

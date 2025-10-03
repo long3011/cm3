@@ -16,12 +16,11 @@ const AddJobPage = () => {
     location: "",
     salary: 0,
     experienceLevel: "Entry", //Entry, Mid, Senior
-    postedDate: Date.now(),
-    status: "Open", //Open, Closed
-    applicationDeadline: null, //Date
+    postedDate: Date.now().toString(),
+    status: "open", //Open, Closed
+    applicationDeadline: "", //Date
     requirements: [],
   });
-  const [newJob, setNewJob] = useState(job);
   
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user ? user.token : null;
@@ -51,30 +50,7 @@ const AddJobPage = () => {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    setNewJob(job);
-    console.log(newJob);
-
-    setJob({
-    title: "",
-    type: "Full-Time",
-    description: "",
-    company: {
-      name: "",
-      contactEmail: "",
-      contactPhone: "",
-      website: "",
-      size: 0,
-    },
-    location: "",
-    salary: 0,
-    experienceLevel: "Entry", //Entry, Mid, Senior
-    postedDate: Date.now(),
-    status: "Open", //Open, Closed
-    applicationDeadline: Date.now(), //Date
-    requirements: [],
-  });
-
-    const success = await addJob(newJob);
+    const success = await addJob(job);
     if (success) {
       console.log("Job Added Successfully");
       navigate("/");
@@ -169,8 +145,8 @@ const AddJobPage = () => {
         </select>
         <label>Job Status:</label>
         <select value={job.status} onChange={(e) => setJob({ ...job, status: e.target.value })}>
-          <option value="Open">Open</option>
-          <option value="Closed">Closed</option>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
         </select>
         <label>Application Deadline:</label>
         <input

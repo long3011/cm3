@@ -19,12 +19,11 @@ const EditJobPage = () => {
     location: "",
     salary: 0,
     experienceLevel: "Entry", //Entry, Mid, Senior
-    postedDate: new Date.now(),
-    status: "Open", //Open, Closed
+    postedDate: Date.now().toString(),
+    status: "open", //Open, Closed
     applicationDeadline: null, //Date
     requirements: [],
   });
-  const [newJob, setNewJob] = useState(job);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user ? user.token : null;
@@ -47,7 +46,9 @@ const EditJobPage = () => {
     } catch (error) {
       console.error(error);
       setError(error.message);
+      return false;
     }
+    return true;
   };
 
   useEffect(() => {
@@ -72,29 +73,7 @@ const EditJobPage = () => {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    setNewJob(job);
-
-    setJob({
-    title: "",
-    type: "Full-Time",
-    description: "",
-    company: {
-      name: "",
-      contactEmail: "",
-      contactPhone: "",
-      website: "",
-      size: 0,
-    },
-    location: "",
-    salary: 0,
-    experienceLevel: "Entry", //Entry, Mid, Senior
-    postedDate: new Date.now(),
-    status: "Open", //Open, Closed
-    applicationDeadline: null, //Date
-    requirements: [],
-  }) // Reset form
-
-    const success = await updateJob(newJob);
+    const success = await updateJob(job);
     if (success) {
       // toast.success("Job Updated Successfully");
       navigate(`/jobs/${id}`);
@@ -194,8 +173,8 @@ const EditJobPage = () => {
         </select>
         <label>Job Status:</label>
         <select value={job.status} onChange={(e) => setJob({ ...job, status: e.target.value })}>
-          <option value="Open">Open</option>
-          <option value="Closed">Closed</option>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
         </select>
         <label>Application Deadline:</label>
         <input
